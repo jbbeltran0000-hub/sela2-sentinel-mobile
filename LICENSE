@@ -1,3 +1,70 @@
+Here is the complete README.md file ready to copy and paste directly into your GitHub repository. It documents the mobile-first layout, the CARB AQview / AB 617 CSV export schema, deployment instructions for GitHub Pages, and the required non-regulatory community science disclaimer.
+# SELA Sentinel — Mobile Environmental Monitoring & Analytics Tool
+
+**SELA Sentinel** is a mobile-first, open-source community air quality monitoring and analytics prediction tool designed for Southeast Los Angeles (SELA) communities—including South Gate, Huntington Park, Cudahy, Bell Gardens, Maywood, Florence-Firestone, and Walnut Park.
+
+Built for rapid field use on smartphones during community walks, fence-line observations, and Assembly Bill (AB) 617 meetings, the tool aggregates open-source environmental telemetry and formats observations into standardized schemas compatible with California Air Resources Board (CARB) AQview and Community Emissions Reduction Program (CERP) reporting workflows.
+
+---
+
+## Key Features
+
+* **Mobile-First Bottom-Sheet UI (`100dvh`):** Full-bleed map viewport with a collapsible bottom drawer that keeps filter controls, bilingual toggles (`EN / ES`), and export triggers accessible one-handed on small screens.
+* **Multi-Variable Corridor Filtering:** Filter live readings by pollutant (`PM2.5`, `PM10`, `VOCs / Benzene`, `NO₂ / Diesel`), SELA jurisdiction, and freight/industrial corridors (`I-710`, `Alameda Corridor`, `I-105`).
+* **CARB AQview & CERP CSV Export:** One-tap export packages filtered readings with standardized EPA AQS parameter codes, QA/QC flags, CERP strategy references, and prepended community science metadata headers.
+* **Zero-Build Standalone Architecture:** Runs as a lightweight static web application (`index.html`) that deploys directly from GitHub Pages with no backend server overhead.
+
+---
+
+## Repository Structure
+
+```text
+sela-sentinel/
+├── index.html          # Standalone mobile-first interface, bottom-sheet UI, and CSV exporter
+├── data/
+│   └── stations.json   # Local/fallback sensor telemetry payload
+└── README.md           # Project documentation, schema reference, and legal disclaimer
+
+Quick Start & GitHub Pages Deployment
+ * Clone or Create the Repository:
+   git clone [https://github.com/](https://github.com/)<your-username>/sela-sentinel.git
+cd sela-sentinel
+
+ * Test Locally:
+   Open index.html directly in any mobile or desktop browser, or serve locally via Python:
+   python3 -m http.server 8080
+
+ * Deploy via GitHub Pages:
+   * Push your files to the main branch on GitHub.
+   * Navigate to Settings → Pages in your repository.
+   * Under Build and deployment, select Deploy from a branch, choose main and / (root), and click Save.
+   * Your live mobile tool will be published at https://<your-username>.github.io/sela-sentinel/.
+CARB / AQview Export Schema
+All CSV files generated via the Export CARB / AQview CSV Data button adhere to the following column structure:
+| Column Header | Format / Standard | Description |
+|---|---|---|
+| record_id | SELA-YYYYMMDD-#### | Unique observation or aggregation identifier |
+| timestamp_utc | ISO-8601 (YYYY-MM-DDTHH:MM:SSZ) | Standardized UTC timestamp for cross-network alignment |
+| timestamp_local | America/Los_Angeles | Local Pacific Time reference |
+| community_id | SELA_AB617 | AB 617 designated community boundary identifier |
+| jurisdiction | String | SELA city or unincorporated community name |
+| corridor_tag | Enum | Freight or industrial zone (I-710, Alameda_Corridor, Residential, etc.) |
+| sensor_source | Enum | Telemetry origin (PurpleAir, OpenAQ, Mobile_Field_Unit, Community_Observation) |
+| parameter_code | EPA AQS Code | 88101 (PM2.5), 81102 (PM10), 42602 (NO₂), 45201 (Benzene) |
+| measured_value | Float | Recorded concentration value |
+| unit | Enum | Measurement unit (ug/m3, ppb, ppm) |
+| qa_qc_flag | Enum | Data quality flag (VALID, SUSPECT_SPIKE, HUMIDITY_ADJUSTED, OFFLINE_GAP) |
+| cerp_strategy_ref | String | Corresponding SELA CERP mitigation measure reference |
+| regulatory_status | Fixed String | NON_REGULATORY_COMMUNITY_SCIENCE |
+Community Science & Regulatory Disclaimer
+> IMPORTANT NOTICE: SELA Sentinel is an independent, community-driven technology and analytics prediction tool developed for educational, informational, and community science purposes.
+>  * No Regulatory Standing: Data displayed and exported from this platform is aggregated from low-cost community sensors and open-source telemetry feeds. These measurements have not undergone formal regulatory validation and do not hold official regulatory standing with the California Air Resources Board (CARB), the South Coast Air Quality Management District (South Coast AQMD), or the U.S. EPA.
+>  * Data Accuracy & Limitation of Liability: Continuous low-cost sensors may be affected by local meteorology (such as high relative humidity), maintenance cycles, or power/network interruptions. No warranty, express or implied, is made regarding the completeness, reliability, or accuracy of the data presented, and the project maintainers assume no liability for decisions or claims arising from its use.
+>  * No Commercial Endorsement: Integration or display of third-party sensor hardware or public API feeds (such as PurpleAir or OpenAQ) does not constitute a commercial endorsement of any vendor or product.
+> 
+License
+Released under the MIT License for open community science and environmental justice transparency.
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
